@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Details</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>
+  </head>
+  <body>
+    <div id = "app">
+      <nav class="navbar navbar-default navbar-fixed-top " style="padding-top :15px; padding-bottom : 15px ;background-color :#10B47D  ">
+        <div class="container-fluid">
+          <div class="navbar-header col-md-4">
+            <a class="navbar-brand" style="cursor:pointer; color:white ;font-weight:900 ;font-size: 200%;" onclick="home()">Gadget Geek</a>
+          </div>
+           <ul class="nav navbar-nav col-md-4">
+             <li class="dropdown" style="font-weight:900 ;font-size: 150%;">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+              style="color:white;font-weight:900" aria-haspopup="true" aria-expanded="false">Handphone<span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Iphone</a></li>
+                <li><a href="#">Samsung</a></li>
+                <li><a href="#">Sony</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Accesories</a></li>
+              </ul>
+            </li>
+
+            <li class="dropdown" style="color:white;font-weight:900 ;font-size: 150%;">
+             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+             style="color:white;font-weight:900"aria-expanded="false">Laptops<span class="caret"></span></a>
+             <ul class="dropdown-menu">
+               <li><a href="#">Apple</a></li>
+               <li><a href="#">Samsung</a></li>
+               <li><a href="#">Sony</a></li>
+               <li role="separator" class="divider"></li>
+               <li><a href="#">Accesories</a></li>
+             </ul>
+           </li>
+
+           <li class="dropdown" style="color:#57b1df;font-weight:900 ;font-size: 150%;">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+            style="color:white;font-weight:900"role="button" aria-haspopup="true" aria-expanded="false">Peripheral<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Headphone</a></li>
+              <li><a href="#">Smart Watch</a></li>
+              <li><a href="#">Keyboard</a></li>
+              <li><a href="#">Mouse</a></li>
+            </ul>
+          </li>
+        </ul>
+
+            <form class="navbar-form navbar-right">
+              <div class="form-group">
+                <input type="text" class="form-control" placeholder="Search">
+              </div>
+              <button type="submit" class="btn btn-default">Submit</button>
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+              <li style="font-weight:900 ;font-size: 100%;" class="dropdown">
+                <a href="" class="glyphicon glyphicon-shopping-cart dropdown-toggle"
+                data-toggle="dropdown" role="button" aria-haspopup="true"
+                aria-expanded="false" style="color:white"> {{totalCart}}</a>
+                <ul class="dropdown-menu">
+                   <div v-for="cart in listChart">
+                      <li role="separator" class="divider"></li>
+                       <li>{{cart}}</li>
+                   </div>
+
+
+                </ul>
+              </li>
+              <li style="font-weight:900 ;font-size: 100%;color:white;padding-top:15px">SIGN IN</li>
+            </ul>
+        </div>
+      </nav>
+
+      <div class="" style="padding-top:100px">
+        <div class="container">
+          <div class="row">
+              <div class="col-md-4">
+                <div class="list-group">
+                  <a href="#" class="list-group-item disabled">Category</a>
+                  <a href="#" class="list-group-item" v-for="category in categoriesData">{{ category }}<span class="badge"></span></a>
+                </div>
+                <div class="list-group">
+                  <a href="#" class="list-group-item disabled">Genre</a>
+                  <a href="#" class="list-group-item">Category Mirror 1 <span class="badge">14</span></a>
+
+                </div>
+              </div>
+
+              <div class="col-md-8">
+                <div class="col-md-4" v-for = "item in itemData">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <img  v-bind:src="item.image" class="img-responsive img-rounded" alt="Item Image" style="width:1750px;height:200px;">
+                    </div>
+                    <div class="panel-body text-center">
+                      <h5>{{item.item_name}}</h5>
+                      <h5>$ {{item.price}}</h5>
+                      <button type="button" name="add-item" class="btn btn-primary" v-on:click="addToCart(item.item_name)">Add To Cart</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        itemData: "nice",
+        categoriesData: ["Handphone","Laptops","Gadget"],
+        totalCart : 0,
+        listChart : []
+      },
+      methods :{
+        get(){
+          let self = this
+          axios.get("http://localhost:3000/items").
+          then(response=>{
+
+            self.itemData = response.data
+          }).
+          catch(err=>{console.log(err);})
+        },
+
+        addToCart(item){
+
+          this.listChart.push(item)
+          this.totalCart +=1
+        }
+
+      },
+      created(){
+        this.get()
+      }
+    })
+
+    </script>
+
+
+  </body>
+</html>

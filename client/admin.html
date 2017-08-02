@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Admin</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>
+  </head>
+  <body>
+    <div id ='mainAdmin'>
+      <script>
+
+      </script>
+      <div class="container" style="padding-top :100px">
+        <button type="button" name="button" class= "btn btn-primary col-md-offset-10" data-toggle="modal" data-target="#create" id="showModal">+ Add Poduct</button>
+        <!-- Modal -->
+          <div class="modal fade" id="create" role="dialog">
+            <div class="modal-dialog">
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title">Add Product</h4>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="form-group">
+                      <input v-model="item_name" id="item_name" type="text" name="item_name" class="form-control" placeholder="Item Name..">
+                    </div>
+                    <div class="form-group">
+                      <input v-model="image" id="image" type="text" name="image"  class="form-control" placeholder="Picture Link">
+                    </div>
+                    <div class="form-group">
+                        <input v-model="brand" id="brand"type="text" name="brand"  class="form-control" placeholder="Your Brand">
+                    </div>
+                    <div class="form-group">
+                      <input v-model="category" id="category"type="text" name="category"  class="form-control" placeholder="Item Cotegory">
+                    </div>
+                    <div class="form-group">
+                        <input v-model="stock" id="stock" type="text" name="stock"  class="form-control" placeholder="You Stock">
+                    </div>
+                    <div class="form-group">
+                        <input v-model="price" id="price" type="text" name="price"  class="form-control"placeholder="price">
+                    </div>
+
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal" v-on:click="addItem">Submit</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <h2>Items</h2>
+        <table class="table table-responsive">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Options</th>
+            </tr>
+          </thead>
+
+          <tr v-for="item in itemData">
+            <td>{{item.item_name}}</td>
+            <td>{{item.category}}</td>
+            <td>{{item.price}}</td>
+            <td>{{item.stock}}</td>
+            <td>
+              <button type="button" name="button" class="glyphicon glyphicon-pencil btn btn-info"> Edit</button>
+              <button type="button" name="button" class="glyphicon glyphicon-trash btn btn-danger"> Delete</button>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+
+      <script>
+
+      $( document ).ready(function() {
+
+        $( "#showModal" ).click(function() {
+          $('#item_name').val('');
+          $('#category').val('');
+          $('#image').val('');
+          $('#stock').val('');
+          $('#price').val('');
+          $('#brand').val('');
+        });
+      });
+
+
+      var mainAdmin = new Vue({
+        el: '#mainAdmin',
+        data: {
+          itemData: "",
+          categoriesData: ["Handphone","Laptops","Gadget"],
+          totalCart : 0,
+          listChart : [],
+          category :'',
+          item_name : '',
+          image :'',
+          stock : '',
+          price :'',
+          brand :'',
+
+        },
+        methods :{
+          get(){
+            let self = this
+            axios.get("http://localhost:3000/items").
+            then(response=>{
+              self.itemData = response.data
+            }).
+            catch(err=>{console.log(err);})
+          },
+
+          addItem(){
+            let self = this
+            axios.post('http://localhost:3000/items',{
+              category :self.category,
+              merk : self.brand,
+              item_name : self.item_name,
+              image :self.image,
+              stock : self.stock,
+              price :self.price,
+          
+            }).
+            then(show =>{
+              console.log(show);
+            }).catch(err=>(console.log(err)))
+          }
+        },
+        created(){
+          this.get()
+        }
+      })
+
+      </script>
+    </div>
+  </body>
+</html>

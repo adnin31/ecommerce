@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js"></script>
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top " style="padding-top :15px; padding-bottom : 15px ;background-color :#10B47D  ">
+      <div class="container-fluid">
+        <div class="navbar-header col-md-4">
+          <a class="navbar-brand" style="cursor:pointer; color:white ;font-weight:900 ;font-size: 200%;" onclick="home()">Gadget Geek</a>
+        </div>
+         <ul class="nav navbar-nav col-md-4">
+           <li class="dropdown" style="font-weight:900 ;font-size: 150%;">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+            style="color:white;font-weight:900" aria-haspopup="true" aria-expanded="false">Handphone<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Iphone</a></li>
+              <li><a href="#">Samsung</a></li>
+              <li><a href="#">Sony</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="#">Accesories</a></li>
+            </ul>
+          </li>
+
+          <li class="dropdown" style="color:white;font-weight:900 ;font-size: 150%;">
+           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+           style="color:white;font-weight:900"aria-expanded="false">Laptops<span class="caret"></span></a>
+           <ul class="dropdown-menu">
+             <li><a href="#">Apple</a></li>
+             <li><a href="#">Samsung</a></li>
+             <li><a href="#">Sony</a></li>
+             <li role="separator" class="divider"></li>
+             <li><a href="#">Accesories</a></li>
+           </ul>
+         </li>
+
+         <li class="dropdown" style="color:#57b1df;font-weight:900 ;font-size: 150%;">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+          style="color:white;font-weight:900"role="button" aria-haspopup="true" aria-expanded="false">Peripheral<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Headphone</a></li>
+            <li><a href="#">Smart Watch</a></li>
+            <li><a href="#">Keyboard</a></li>
+            <li><a href="#">Mouse</a></li>
+          </ul>
+        </li>
+
+          </ul>
+          <form class="navbar-form navbar-left">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Search">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+          </form>
+          <ul class="nav navbar-nav">
+            <li style="font-weight:900 ;font-size: 150%;"  ><a href="#" class="glyphicon glyphicon-shopping-cart" style="color:white"></a></li>
+          </ul>
+      </div>
+    </nav>
+    <div class="container" style="padding-top :100px">
+      <h1 >Your Cart</h1>
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <tr>
+            <th></th>
+            <th>Produk</th>
+            <th>Harga</th>
+            <th>Kuantitas</th>
+            <th>SubTotal</th>
+          </tr>
+          <tr style="">
+            <td>
+                    <img src="http://images.all-free-download.com/images/graphiclarge/harry_potter_icon_6825007.jpg"
+                   style="width:90px;height:100px" alt="produk" class="img-responsive">
+
+            </td>
+            <td>Samsung Galaxy s8</td>
+            <td>$10000.00</td>
+            <td>2</td>
+            <td>$20000.00</td>
+          </tr>
+          <tr>
+            <th></th>
+            <th>Total</th>
+            <th></th>
+            <th></th>
+            <th>$20000.00</th>
+            <th></th>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="container">
+      <div >
+        <button type="button" name="button" style="text-align :right" class="btn btn-primary">Checkout</button>
+      </div>
+    </div>
+
+    <div id ="app" class="container" style="padding-top:30px">
+      <li>{{message}}</li>
+
+      <ol>
+        <li v-for= "respon in paragraph" >{{respon}}</li>
+      </ol>
+      <button type="button" v-on:click = "getData">getData</button>
+      <p v-bind:title="bind">iuiuiu</p>
+      <input type="text" v-model ="paragraph">
+    </div>
+
+    <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        message: 'yuuuu',
+        paragraph : "this a paragraph",
+        bind : `You are the best ${new Date}`,
+      },
+      methods :{
+        getData(){
+          var self = this
+          axios.get("http://localhost:3000/items").
+          then(response=>{
+            console.log(response.data);
+            self.paragraph = response.data
+          }).
+          catch(err=>{console.log(err);})
+        }
+      }
+
+    })
+    </script>
+
+  </body>
+</html>
